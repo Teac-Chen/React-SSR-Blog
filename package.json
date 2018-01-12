@@ -1,0 +1,40 @@
+{
+  "name": "react-ssr-blog",
+  "version": "1.0.0",
+  "description": "React-SSR-Blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Teac-Chen/React-SSR-Blog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Teac-Chen/React-SSR-Blog/issues"
+  },
+  "homepage": "https://github.com/Teac-Chen/React-SSR-Blog#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "glob": "^7.1.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
+    "gulp-eslint": "^4.0.1",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-nodemon": "^2.2.1",
+    "nodemon": "^1.14.11"
+  },
+  "dependencies": {
+    "koa": "^2.4.1",
+    "mongoose": "^4.13.9"
+  }
+}
