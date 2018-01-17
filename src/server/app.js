@@ -5,13 +5,12 @@ import Koa from 'koa';
 
 import routers from './routers';
 import config from '../../config/config';
+import serverRenderDev from './utils/server-render-dev';
 
 const app = new Koa();
 const host = process.env.HOST || config.host;
 const port = process.env.PORT || config.port;
 const isDev = process.env.NODE_ENV === 'development';
-
-console.log('isDev ==> ', isDev);
 
 // mongoose.Promise = global.Promise;
 // mongoose.connect('mongodb://localhost/blog', {useMongoClient: true}, (err) => {
@@ -46,6 +45,10 @@ Object.keys(routers.backstage).forEach(key => {
 Object.keys(routers.frontstage).forEach(key => {
   app.use(routers.frontstage[key].middleware());
 });
+
+if(isDev){
+  serverRenderDev(app);
+}
 
 app.listen(port);
 
