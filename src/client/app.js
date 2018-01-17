@@ -1,19 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 
-class App extends React.Component {
-  componentWillMount() {
-    axios.get('/admin/home')
-      .then((result) => {
-        console.log(result); //eslint-disable-line
-      });
-  }
-
-  render() {
-    return <div>Hello React!!!!~</div>;
-  }
-}
+import App from './views/App';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

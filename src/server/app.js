@@ -46,7 +46,7 @@ Object.keys(routers.frontstage).forEach(key => {
   app.use(routers.frontstage[key].middleware());
 });
 
-if(isDev){
+if (isDev) {
   serverRenderDev(app);
 }
 

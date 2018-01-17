@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   resolve: {
-    extensions: ['.js', 'jsx']
+    extensions: ['.js', '.jsx']
   },
   module: {
     rules: [
@@ -16,6 +16,9 @@ module.exports = {
       },{
         test: /.(js|jsx)$/,
         loader: 'babel-loader',
+        options: {
+          presets: ['react', 'env']
+        },
         exclude: [
           path.join(__dirname, '../node_modules')
         ]

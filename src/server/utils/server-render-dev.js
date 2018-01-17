@@ -2,6 +2,8 @@ import axios from 'axios';
 import path from 'path';
 import MemoryFileSystem from 'memory-fs';
 import webpack from 'webpack';
+import Router from 'koa-better-router';
+import proxy from 'http-proxy-middleware';
 // import NativeModule from 'module';
 // import vm from 'vm';
 import ReactDomServer from 'react-dom/server';
@@ -16,7 +18,7 @@ const serverCompiler = webpack(webpackServerConfig);
 let serverBundle;
 serverCompiler.outputFileSystem = mfs;
 serverCompiler.watch({}, (err, stats) => {
-  if(err) throw err;
+  if (err) throw err;
 
   stats = stats.toJson();
   stats.errors.forEach(err => console.error(err));
@@ -25,31 +27,41 @@ serverCompiler.watch({}, (err, stats) => {
   const bundlePath = path.join(
     webpackServerConfig.output.path,
     webpackServerConfig.output.filename
-  )
+  );
 
   const bundle = mfs.readFileSync(bundlePath, 'utf-8');
 
   const m = new Module();
   m._compile(bundle, 'server-entry.js');
   serverBundle = m.exports.default;
-})
+});
 
 const getTemplate = () => {
   return new Promise((resolve, reject) => {
-    axios.get('http://localhost:4000/public/index.html')
+    axios.get('http://localhost:4000/index.html')
       .then(res => {
         resolve(res.data);
       })
       .catch(reject);
-  })
-}
+  });
+};
 
 export default (app) => {
-  app.get('*', (req, res) => {
-    getTemplate().then(template => {
+  const router = Router().loadMethods();
+
+  app.use('/public', proxy({
+    target: 'http://localhost:4000'
+  }));
+
+  router.get('*', async (ctx, next) => {
+    await getTemplate().then(template => {
       const content = ReactDomServer.renderToString(serverBundle);
 
-      res.send(template.replace(''))
-    })
-  })
-}
+      ctx.body = template.replace('<!--app-->', content);
+    });
+
+    next();
+  });
+
+  app.use(router.middleware());
+};

@@ -1,1 +1,5 @@
-server-entry.js
+import React from 'react';
+
+import App from './views/App';
+
+export default <App />;

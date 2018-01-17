@@ -10,8 +10,8 @@ const config = {
   },
   output: {
     path: path.join(__dirname, '../', "/bin/client/"),
-    filename: "[name].js",
-    publicPath: ""
+    filename: "[name].[hash].js",
+    publicPath: "/public/"
   },
   resolve: {
     extensions: ['.js', '.jsx']
@@ -67,13 +67,13 @@ if (isDev) {
     hot: true,
     publicPath: '',
     historyApiFallback: {
-      index: 'index.html'
+      index: '/public/index.html'
     },
     overlay: {
       errors: true
     },
     proxy: {
-      '*': 'http://localhost:3000'
+      '/api': 'http://localhost:3000'
     }
   };
   config.plugins.push(new webpack.HotModuleReplacementPlugin());

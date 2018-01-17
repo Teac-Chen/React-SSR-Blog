@@ -6,7 +6,7 @@
   "scripts": {
     "server:dev": "cross-env NODE_ENV=development gulp",
     "server:pro": "cross-env NODE_ENV=production gulp",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.config.js"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.client.js"
   },
   "repository": {
     "type": "git",
@@ -43,10 +43,12 @@
     "gulp-load-plugins": "^1.5.0",
     "gulp-nodemon": "^2.2.1",
     "html-webpack-plugin": "^2.30.1",
+    "http-proxy-middleware": "^0.17.4",
     "nodemon": "^1.14.11",
     "react-hot-loader": "^4.0.0-beta.14",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.0"
+    "webpack-dev-server": "^2.11.0",
+    "webpack-merge": "^4.1.1"
   },
   "dependencies": {
     "axios": "^0.17.1",
