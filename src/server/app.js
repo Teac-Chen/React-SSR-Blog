@@ -1,6 +1,7 @@
 import Koa from 'koa';
+import favicon from 'koa-favicon';
 // import render from 'koa-ejs';
-// import path from 'path';
+import path from 'path';
 // import mongoose from 'mongoose';
 
 import routers from './routers';
@@ -29,6 +30,10 @@ const isDev = process.env.NODE_ENV === 'development';
 //   debug: false
 // });
 
+app.on('error', err => {
+  console.log('server error', err);
+});
+
 app.use(async (ctx, next) => {
   const start = Date.now();
   await next();
@@ -37,6 +42,8 @@ app.use(async (ctx, next) => {
   ctx.set('X-Response-Time', `${ms}ms`);
   ctx.set('X-Origin-Add', `${host}:${port}`);
 });
+
+app.use(favicon(path.join(__dirname, '../../favicon.ico')));
 
 Object.keys(routers.backstage).forEach(key => {
   app.use(routers.backstage[key].middleware());

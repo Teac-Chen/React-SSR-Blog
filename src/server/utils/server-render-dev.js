@@ -3,7 +3,7 @@ import path from 'path';
 import MemoryFileSystem from 'memory-fs';
 import webpack from 'webpack';
 import Router from 'koa-better-router';
-import proxy from 'http-proxy-middleware';
+import proxy from 'koa-proxies';
 // import NativeModule from 'module';
 // import vm from 'vm';
 import ReactDomServer from 'react-dom/server';
@@ -38,7 +38,7 @@ serverCompiler.watch({}, (err, stats) => {
 
 const getTemplate = () => {
   return new Promise((resolve, reject) => {
-    axios.get('http://localhost:4000/index.html')
+    axios.get('http://localhost:4000/public/index.html')
       .then(res => {
         resolve(res.data);
       })
@@ -49,18 +49,20 @@ const getTemplate = () => {
 export default (app) => {
   const router = Router().loadMethods();
 
-  app.use('/public', proxy({
-    target: 'http://localhost:4000'
+  app.use(proxy('/public', {
+    target: 'http://localhost:4000',
+    logs: true
   }));
 
   router.get('*', async (ctx, next) => {
-    await getTemplate().then(template => {
-      const content = ReactDomServer.renderToString(serverBundle);
+    if (!ctx.body) {
+      await getTemplate().then(template => {
+        const content = ReactDomServer.renderToString(serverBundle);
 
-      ctx.body = template.replace('<!--app-->', content);
-    });
-
-    next();
+        ctx.body = template.replace('<!--app-->', content);
+      });
+    }
+    return next();
   });
 
   app.use(router.middleware());

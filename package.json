@@ -43,7 +43,7 @@
     "gulp-load-plugins": "^1.5.0",
     "gulp-nodemon": "^2.2.1",
     "html-webpack-plugin": "^2.30.1",
-    "http-proxy-middleware": "^0.17.4",
+    "koa-proxies": "^0.6.2",
     "nodemon": "^1.14.11",
     "react-hot-loader": "^4.0.0-beta.14",
     "webpack": "^3.10.0",
@@ -55,6 +55,7 @@
     "cross-env": "^5.1.3",
     "koa": "^2.4.1",
     "koa-better-router": "^2.1.1",
+    "koa-favicon": "^2.0.0",
     "mongoose": "^4.13.9",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
