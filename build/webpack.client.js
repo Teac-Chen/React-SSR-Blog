@@ -1,56 +1,25 @@
 const path = require('path');
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const HTMLPlugin = require('html-webpack-plugin');
+
+const baseConfig = require('./webpack.base');
 
 const isDev = process.env.NODE_ENV === 'development';
 
-const config = {
+const config = merge(baseConfig, {
   entry: {
     app: path.join(__dirname, '../src/client/app.js')
   },
   output: {
-    path: path.join(__dirname, '../', "/bin/client/"),
-    filename: "[name].[hash].js",
-    publicPath: "/public/"
-  },
-  resolve: {
-    extensions: ['.js', '.jsx']
-  },
-  module: {
-    rules: [
-      {
-        enforce: 'pre',
-        test: /.(js|jsx)$/,
-        loader: 'eslint-loader',
-        exclude: [
-          path.resolve(__dirname, '../node_modules')
-        ]
-      },
-      {
-        test: /.(js|jsx)$/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['react', 'env']
-        },
-        exclude: [
-          path.join(__dirname, '../node_modules')
-        ]
-      },
-      {
-        test: /\.(png|jpg|gif|svg)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]?[hash]'
-        }
-      }
-    ]
+    filename: "[name].[hash].js"
   },
   plugins: [
     new HTMLPlugin({
       template: path.join(__dirname, '../src/client/index.html')
     })
   ]
-}
+})
 
 if (isDev) {
   config.devtool = '#cheap-module-eval-source-map';
