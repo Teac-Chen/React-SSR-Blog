@@ -1,17 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+// import { Provider } from 'react-redux';
+// import { createStore } from 'redux';
 
-import todoApp from './demo/reducers';
-import App from './demo/components/App';
+// import todoApp from './demo/reducers';
+// import App from './demo/components/App';
+import App from './views/App';
 
-const store = createStore(todoApp);
+// const store = createStore(todoApp);
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <App />,
   document.getElementById('root'),
 );
 
