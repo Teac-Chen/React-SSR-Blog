@@ -34,7 +34,7 @@ if (isDev) {
     compress: true,
     port: 4000,
     hot: true,
-    publicPath: '',
+    publicPath: '/public/',
     historyApiFallback: {
       index: '/public/index.html'
     },

@@ -15,5 +15,8 @@ ReactDOM.render(
 );
 
 if (module.hot) {
-  module.hot.accept();
+  module.hot.accept('./views/App', () => {
+    const NextApp = require('./views/App').default  // eslint-disable-line
+    ReactDOM.render(NextApp);
+  });
 }
