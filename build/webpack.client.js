@@ -45,7 +45,10 @@ if (isDev) {
       '/api': 'http://localhost:3000'
     }
   };
-  config.plugins.push(new webpack.HotModuleReplacementPlugin());
+  config.plugins.push(
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  );
 };
 
 module.exports = config;

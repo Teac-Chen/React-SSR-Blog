@@ -6,7 +6,13 @@ module.exports = {
     publicPath: "/public/"
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
+    alias: {
+      'views': path.join(__dirname, '../src/client/views'),
+      'routes': path.join(__dirname, '../src/client/routes'),
+      'components': path.join(__dirname, '../src/client/components'),
+      'store': path.join(__dirname, '../src/client/store'),
+    }
   },
   module: {
     rules: [
