@@ -1,22 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { Provider } from 'react-redux';
-// import { createStore } from 'redux';
-
-// import todoApp from './demo/reducers';
-// import App from './demo/components/App';
+import { AppContainer } from 'react-hot-loader'; //eslint-disable-line
 import App from './views/App';
 
-// const store = createStore(todoApp);
+const render = (Component) => {
+  ReactDOM.render(
+    <AppContainer>
+      <Component />
+    </AppContainer>,
+    document.getElementById('root'),
+  );
+};
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root'),
-);
+render(App);
 
 if (module.hot) {
   module.hot.accept('./views/App', () => {
-    const NextApp = require('./views/App').default  // eslint-disable-line
-    ReactDOM.render(NextApp);
+    render(require('./views/App').default);  //eslint-disable-line
   });
 }
