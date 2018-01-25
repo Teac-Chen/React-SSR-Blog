@@ -4,8 +4,6 @@ import MemoryFileSystem from 'memory-fs';
 import webpack from 'webpack';
 import Router from 'koa-better-router';
 import proxy from 'koa-proxies';
-// import NativeModule from 'module';
-// import vm from 'vm';
 import ReactDomServer from 'react-dom/server';
 
 import webpackServerConfig from '../../../build/webpack.server';
@@ -15,7 +13,7 @@ const Module = module.constructor;
 const mfs = new MemoryFileSystem();
 const serverCompiler = webpack(webpackServerConfig);
 
-let serverBundle;
+let serverBundle, store;
 serverCompiler.outputFileSystem = mfs;
 serverCompiler.watch({}, (err, stats) => {
   if (err) throw err;
@@ -34,6 +32,7 @@ serverCompiler.watch({}, (err, stats) => {
   const m = new Module();
   m._compile(bundle, 'server-entry.js');
   serverBundle = m.exports.default;
+  store = m.exports.store;
 });
 
 const getTemplate = () => {
@@ -57,7 +56,12 @@ export default (app) => {
   router.get('*', async (ctx, next) => {
     if (!ctx.body) {
       await getTemplate().then(template => {
-        const content = ReactDomServer.renderToString(serverBundle);
+        const context = {};
+        const app = serverBundle(store, context, ctx.url);
+
+        console.log('context ==> ', context);
+
+        const content = ReactDomServer.renderToString(app);
 
         ctx.body = template.replace('<!--app-->', content);
       });
