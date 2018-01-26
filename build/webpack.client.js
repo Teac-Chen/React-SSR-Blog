@@ -46,7 +46,6 @@ if (isDev) {
     }
   };
   config.plugins.push(
-    new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()
   );
 };

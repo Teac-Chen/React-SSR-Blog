@@ -5,9 +5,9 @@ import { Provider } from 'react-redux';
 import App from 'views/App';
 import store from 'store';
 
-export default (storeSsr, context, url) => (
+export default (storeSsr, routerContext, url) => (
   <Provider store={storeSsr}>
-    <StaticRouter context={context} location={url}>
+    <StaticRouter context={routerContext} location={url}>
       <App />
     </StaticRouter>
   </Provider>

@@ -56,14 +56,25 @@ export default (app) => {
   router.get('*', async (ctx, next) => {
     if (!ctx.body) {
       await getTemplate().then(template => {
-        const context = {};
-        const app = serverBundle(store, context, ctx.url);
+        if (!serverBundle) {
+          ctx.body = 'wait for server compile!';
+        } else {
+          const routerContext = { flag: true };
+          const app = serverBundle(store, routerContext, ctx.url);
 
-        console.log('context ==> ', context);
+          console.log('server-render-dev ===> ', routerContext);
 
-        const content = ReactDomServer.renderToString(app);
+          // if (ctx.url === '/') {
+          //   ctx.status = 302;
+          //   ctx.redirect('/todo/list');
 
-        ctx.body = template.replace('<!--app-->', content);
+          //   return;
+          // }
+
+          const content = ReactDomServer.renderToString(app);
+
+          ctx.body = template.replace('<!--app-->', content);
+        }
       });
     }
     return next();
