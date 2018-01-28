@@ -13,14 +13,14 @@ const Module = module.constructor;
 const mfs = new MemoryFileSystem();
 const serverCompiler = webpack(webpackServerConfig);
 
-let serverBundle, store;
+let serverBundle, createStore;
 serverCompiler.outputFileSystem = mfs;
 serverCompiler.watch({}, (err, stats) => {
   if (err) throw err;
 
   stats = stats.toJson();
-  stats.errors.forEach(err => console.error(err));
-  stats.warnings.forEach(warn => console.warn(warn));
+  stats.errors.forEach(err => console.error('webpack err ===> ', err));
+  stats.warnings.forEach(warn => console.warn('webpack warn ===> ', warn));
 
   const bundlePath = path.join(
     webpackServerConfig.output.path,
@@ -32,7 +32,7 @@ serverCompiler.watch({}, (err, stats) => {
   const m = new Module();
   m._compile(bundle, 'server-entry.js');
   serverBundle = m.exports.default;
-  store = m.exports.store;
+  createStore = m.exports.createStore;
 });
 
 const getTemplate = () => {
@@ -54,28 +54,29 @@ export default (app) => {
   }));
 
   router.get('*', async (ctx, next) => {
+    if (!serverBundle) {
+      ctx.body = '页面正在维护中，清稍后！';
+      return next();
+    }
+
     if (!ctx.body) {
-      await getTemplate().then(template => {
-        if (!serverBundle) {
-          ctx.body = 'wait for server compile!';
-        } else {
-          const routerContext = { flag: true };
-          const app = serverBundle(store, routerContext, ctx.url);
+      let template = await getTemplate();
 
-          console.log('server-render-dev ===> ', routerContext);
+      const context = {};
+      const store = createStore({});
 
-          // if (ctx.url === '/') {
-          //   ctx.status = 302;
-          //   ctx.redirect('/todo/list');
+      const app = serverBundle(store, context, ctx.url);
 
-          //   return;
-          // }
+      const content = ReactDomServer.renderToString(app);
 
-          const content = ReactDomServer.renderToString(app);
+      if (context.url) {
+        ctx.status = 301;
+        ctx.redirect(context.url);
 
-          ctx.body = template.replace('<!--app-->', content);
-        }
-      });
+        return next();
+      }
+
+      ctx.body = template.replace('<!--app-->', content);
     }
     return next();
   });

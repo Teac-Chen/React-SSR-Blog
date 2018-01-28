@@ -5,8 +5,4 @@ const combineReducer = combineReducers({
   todos,
 });
 
-const store = createStore(combineReducer);
-
-store.subscribe(() => { console.log(store.getState()) }); //eslint-disable-line
-
-export default store;
+export default initState => createStore(combineReducer, initState);

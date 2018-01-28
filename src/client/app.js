@@ -5,10 +5,16 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from 'views/App';
-import store from 'store';
+import createStore from 'store';
+
+const initState = window.__INITIAL_STATE__ || {};
+const store = createStore(initState);
+
+store.subscribe(() => { console.log(store.getState()) }); //eslint-disable-line
 
 const render = (Component) => {
-  ReactDOM.render(
+  // ReactDOM.render(
+  ReactDOM.hydrate(
     <AppContainer>
       <Provider store={store} >
         <BrowserRouter>

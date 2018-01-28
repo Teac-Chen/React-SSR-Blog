@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import favicon from 'koa-favicon';
-// import render from 'koa-ejs';
+import render from 'koa-ejs';
 import path from 'path';
 // import mongoose from 'mongoose';
 
@@ -22,13 +22,12 @@ const isDev = process.env.NODE_ENV === 'development';
 //   console.log('connect mongodb successful!!');
 // });
 
-// render(app, {
-//   root: path.join(__dirname, '../client/', 'views'),
-//   layout: 'front',
-//   viewExt: 'html',
-//   cache: false,
-//   debug: false
-// });
+render(app, {
+  root: path.join(__dirname, '../client/'),
+  viewExt: 'ejs',
+  cache: false,
+  debug: false
+});
 
 app.on('error', err => {
   console.log('server error', err);

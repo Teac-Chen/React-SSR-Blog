@@ -1,22 +1,32 @@
-export default (state = [], action) => {
+export default (state = { count: 0, list: [] }, action) => {
   switch (action.type) {
-    case 'ADD_TODO':
-      return [
-        ...state,
+    case 'ADD_TODO': {
+      const list = [
+        ...state.list,
         {
-          id: action.id,
+          index: state.count,
           text: action.text,
           completed: false,
         },
       ];
-    case 'TODO_CLICK':
-      return state.map((todo) => {
-        if (todo.id === action.id) {
-          return { ...todo, completed: !todo.completed };
-        }
+      const count = state.count + 1;
 
-        return todo;
-      });
+      return {
+        count,
+        list,
+      };
+    }
+    case 'TODO_CLICK':
+      return {
+        count: state.count,
+        list: state.list.map((todo) => {
+          if (todo.index === action.index) {
+            return { ...todo, completed: !todo.completed };
+          }
+
+          return todo;
+        }),
+      };
     default:
       return state;
   }

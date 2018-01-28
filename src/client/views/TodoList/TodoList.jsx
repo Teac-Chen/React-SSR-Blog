@@ -3,25 +3,26 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const action = {
-  todoClick: id => ({
+  todoClick: index => ({
     type: 'TODO_CLICK',
-    id,
+    index,
   }),
 };
 
 const TodoList = ({ todos, todoClick }) => (
   <ul>
+    <li>{todos.length}</li>
     {todos.map(item => (
       <li
-        key={item.id}
+        key={item.index}
         style={{
           cursor: 'pointer',
         }}
-        onClick={() => todoClick(item.id)}
+        onClick={() => todoClick(item.index)}
         role="presentation"
         aria-hidden
       >
-        {item.id}-<span style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>{item.text}</span>
+        {item.index}-<span style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>{item.text}</span>
       </li>
     ))}
   </ul>
@@ -29,7 +30,7 @@ const TodoList = ({ todos, todoClick }) => (
 
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    index: PropTypes.number.isRequired,
     completed: PropTypes.bool.isRequired,
     text: PropTypes.string.isRequired,
   }).isRequired).isRequired,
@@ -37,11 +38,11 @@ TodoList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  todos: state.todos,
+  todos: state.todos.list,
 });
 
 const mapDispatchToProps = dispatch => ({
-  todoClick: id => dispatch(action.todoClick(id)),
+  todoClick: index => dispatch(action.todoClick(index)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

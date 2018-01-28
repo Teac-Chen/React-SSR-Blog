@@ -1,6 +1,7 @@
 {
   "extends": "standard",
   "rules": {
-    "semi": [2, "always"]
+    "semi": [2, "always"],
+    "no-underscore-dangle": [0]
   }
 }

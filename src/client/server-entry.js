@@ -3,7 +3,7 @@ import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import App from 'views/App';
-import store from 'store';
+import createStore from 'store';
 
 export default (storeSsr, routerContext, url) => (
   <Provider store={storeSsr}>
@@ -13,4 +13,4 @@ export default (storeSsr, routerContext, url) => (
   </Provider>
 );
 
-export { store };
+export { createStore };

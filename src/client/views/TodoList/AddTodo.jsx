@@ -2,16 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-let id = 0;
-
 const addTodo = (text) => {
   const action = {
     type: 'ADD_TODO',
-    id,
     text,
   };
-
-  id += 1;
 
   return action;
 };
