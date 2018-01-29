@@ -7,7 +7,8 @@
     "server:dev": "cross-env NODE_ENV=development gulp",
     "server:pro": "cross-env NODE_ENV=production gulp",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.client.js",
-    "build": "cross-env NODE_ENV=production webpack --config build/webpack.client.js"
+    "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.js",
+    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.js"
   },
   "repository": {
     "type": "git",
@@ -66,6 +67,7 @@
     "react": "^16.2.0",
     "react-async-bootstrapper": "^1.1.2",
     "react-dom": "^16.2.0",
+    "react-helmet": "^5.2.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2"

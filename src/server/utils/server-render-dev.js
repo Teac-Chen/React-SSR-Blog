@@ -6,10 +6,25 @@ import Router from 'koa-better-router';
 import proxy from 'koa-proxies';
 import ReactDomServer from 'react-dom/server';
 import ejs from 'ejs';
+import NativeModule from 'module';
+import vm from 'vm';
+import { Helmet } from 'react-helmet';
 
 import webpackServerConfig from '../../../build/webpack.server';
 
-const Module = module.constructor;
+// const Module = module.constructor;
+
+const getModuleFromString = (bundle, filename) => {
+  const m = { exports: {} };
+  const wrapper = NativeModule.wrap(bundle);
+  const script = new vm.Script(wrapper, {
+    filename: filename,
+    displayErrors: true
+  });
+  const result = script.runInThisContext();
+  result.call(m.exports, m.exports, require, m);
+  return m;
+};
 
 const mfs = new MemoryFileSystem();
 const serverCompiler = webpack(webpackServerConfig);
@@ -30,8 +45,10 @@ serverCompiler.watch({}, (err, stats) => {
 
   const bundle = mfs.readFileSync(bundlePath, 'utf-8');
 
-  const m = new Module();
-  m._compile(bundle, 'server-entry.js');
+  // const m = new Module();
+  // m._compile(bundle, 'server-entry.js');
+  const m = getModuleFromString(bundle, 'server-entry.js');
+
   serverBundle = m.exports.default;
   createStore = m.exports.createStore;
 });
@@ -78,10 +95,14 @@ export default (app) => {
       }
 
       const initialState = ctx.initialState || {};
+      const helmet = Helmet.renderStatic();
+
+      console.log('helmet ==> ', helmet.title.toString());
 
       const html = ejs.render(template, {
         appString: content,
-        initialState: JSON.stringify(initialState)
+        initialState: JSON.stringify(initialState),
+        title: helmet.title.toString()
       });
 
       ctx.body = html;
