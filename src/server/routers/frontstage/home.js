@@ -8,7 +8,20 @@ router.get('/home', (ctx, next) => {
 });
 
 router.get('/todo/list', (ctx, next) => {
-  ctx.initialState = 'todoList';
+  ctx.initialState = {
+    todos: {
+      count: 2,
+      list: [{
+        index: 1,
+        completed: false,
+        text: 'check the detail'
+      }, {
+        index: 2,
+        completed: false,
+        text: 'make dinner'
+      }]
+    }
+  };
   next();
 });
 

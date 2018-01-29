@@ -1,15 +1,15 @@
 export default (state = { count: 0, list: [] }, action) => {
   switch (action.type) {
     case 'ADD_TODO': {
+      const count = state.count + 1;
       const list = [
         ...state.list,
         {
-          index: state.count,
+          index: count,
           text: action.text,
           completed: false,
         },
       ];
-      const count = state.count + 1;
 
       return {
         count,

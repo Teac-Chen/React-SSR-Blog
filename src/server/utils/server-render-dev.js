@@ -5,6 +5,7 @@ import webpack from 'webpack';
 import Router from 'koa-better-router';
 import proxy from 'koa-proxies';
 import ReactDomServer from 'react-dom/server';
+import ejs from 'ejs';
 
 import webpackServerConfig from '../../../build/webpack.server';
 
@@ -37,7 +38,7 @@ serverCompiler.watch({}, (err, stats) => {
 
 const getTemplate = () => {
   return new Promise((resolve, reject) => {
-    axios.get('http://localhost:4000/public/index.html')
+    axios.get('http://localhost:4000/public/server.ejs')
       .then(res => {
         resolve(res.data);
       })
@@ -63,7 +64,7 @@ export default (app) => {
       let template = await getTemplate();
 
       const context = {};
-      const store = createStore({});
+      const store = createStore(ctx.initialState);
 
       const app = serverBundle(store, context, ctx.url);
 
@@ -76,7 +77,14 @@ export default (app) => {
         return next();
       }
 
-      ctx.body = template.replace('<!--app-->', content);
+      const initialState = ctx.initialState || {};
+
+      const html = ejs.render(template, {
+        appString: content,
+        initialState: JSON.stringify(initialState)
+      });
+
+      ctx.body = html;
     }
     return next();
   });
