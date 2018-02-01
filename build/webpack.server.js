@@ -9,7 +9,7 @@ module.exports = merge(baseConfig, {
     app: path.join(__dirname, '../src/client/server-entry.js')
   },
   output: {
-    filename: 'server-entry.js',
+    filename: 'public/server-entry.js',
     libraryTarget: 'commonjs2'
   },
   externals: Object.keys(require('../package.json').dependencies)

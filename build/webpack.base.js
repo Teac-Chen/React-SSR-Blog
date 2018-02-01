@@ -1,9 +1,12 @@
 const path = require('path');
 
+const isDev = process.env.NODE_ENV === 'development';
+const publicPath = isDev ? '/public/' : '/'
+
 module.exports = {
   output: {
-    path: path.join(__dirname, '../', "/bin/client/"),
-    publicPath: "/public/"
+    path: path.join(__dirname, '../', '/bin/client/'),
+    publicPath: publicPath
   },
   resolve: {
     extensions: ['.js', '.jsx'],

@@ -12,7 +12,7 @@ const config = merge(baseConfig, {
     app: path.join(__dirname, '../src/client/app.js')
   },
   output: {
-    filename: "[name].[hash].js"
+    filename: "public/[name].[hash].js"
   },
   plugins: [
     new HTMLPlugin({
@@ -53,6 +53,42 @@ if (isDev) {
   config.plugins.push(
     new webpack.HotModuleReplacementPlugin()
   );
-};
+} else {
+  config.entry = {
+    app: path.join(__dirname, '../src/client/app.js'),
+    vendor: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'react-redux',
+      'redux',
+      'react-helmet',
+      'axios',
+    ]
+  };
+  config.output.filename = "public/[name].[chunkhash].js";
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      minChunks: Infinity
+    }),
+    new webpack.NamedModulesPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    }),
+    new webpack.NamedChunksPlugin((chunk) => {
+      if (chunk.name) {
+        return chunk.name
+      }
+      return chunk.mapModules(m => path.relative(m.context, m.request)).join('_')
+    })
+  )
+}
 
 module.exports = config;
