@@ -1,29 +1,13 @@
-import { addTodo } from 'actions/todos';
-
 export default (state = { count: 0, list: [] }, action) => {
   switch (action.type) {
     case 'ADD_TODO': {
-      const count = state.count + 1;
-
-      const item = addTodo(count, action);
-
-      console.log('reducer todo file item =>', item.then()); //eslint-disable-line
-
       const list = [
         ...state.list,
-        {
-          index: count,
-          text: action.text,
-          completed: false,
-          meta: {
-            createAt: Date.now(),
-            updateAt: Date.now(),
-          },
-        },
+        { ...action.payload },
       ];
 
       return {
-        count,
+        count: list.length,
         list,
       };
     }
@@ -31,7 +15,7 @@ export default (state = { count: 0, list: [] }, action) => {
       return {
         count: state.count,
         list: state.list.map((todo) => {
-          if (todo.index === action.index) {
+          if (todo._id === action.index) {
             return { ...todo, completed: !todo.completed };
           }
 

@@ -12,17 +12,17 @@ const action = {
 const TodoList = ({ todos, todoClick }) => (
   <ul>
     <li>{todos.length}</li>
-    {todos.map(item => (
+    {todos.map((item, index) => (
       <li
         key={item._id}
         style={{
           cursor: 'pointer',
         }}
-        onClick={() => todoClick(item.index)}
+        onClick={() => todoClick(item._id)}
         role="presentation"
         aria-hidden
       >
-        {item.index}-
+        {index + 1}-
         <span
           style={{ textDecoration: item.completed ? 'line-through' : 'none' }}
         >
@@ -36,7 +36,6 @@ const TodoList = ({ todos, todoClick }) => (
 
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({
-    index: PropTypes.number.isRequired,
     completed: PropTypes.bool.isRequired,
     text: PropTypes.string.isRequired,
     meta: PropTypes.object.isRequired,

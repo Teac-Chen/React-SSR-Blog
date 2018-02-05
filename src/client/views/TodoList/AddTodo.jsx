@@ -2,14 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const addTodo = (text) => {
-  const action = {
-    type: 'ADD_TODO',
-    text,
-  };
-
-  return action;
-};
+import { addTodo } from 'actions/todos';
 
 const AddTodo = ({ add }) => {
   let input;
@@ -37,7 +30,7 @@ AddTodo.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  add: text => dispatch(addTodo(text)),
+  add: text => addTodo(dispatch, text),
 });
 
 export default connect(null, mapDispatchToProps)(AddTodo);

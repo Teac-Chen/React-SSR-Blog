@@ -1,14 +1,17 @@
-import axios from 'axios';
+import qs from 'qs';
+import { fetchPost } from 'utils/fetch';
 
-export const addTodo = async (count, action) => {
-  const todo = await axios.post('/todo/add', {
-    count,
-    action,
-  });
+export const addTodo = async (dispatch, text) => {
+  const item = await fetchPost('/todo/add', qs.stringify({
+    text,
+  }));
 
-  console.log('addTodo ===> ', todo.data); //eslint-disable-line
+  const action = {
+    type: 'ADD_TODO',
+    payload: { ...item.data.data },
+  };
 
-  return todo;
+  dispatch(action);
 };
 
 export const clickTodo = () => {

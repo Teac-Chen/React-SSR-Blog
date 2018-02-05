@@ -21,18 +21,18 @@ export const getInit = async (ctx, next) => {
 };
 
 export const addTodo = async (ctx, next) => {
-  console.log(ctx.request);
-  console.log(ctx.request.query);
+  const { text } = ctx.request.body;
 
   const todo = new Todo({
     index: 1,
-    text: 'heihei'
+    text
   });
 
-  await todo.save();
+  const item = await todo.save();
 
   ctx.body = {
     code: 0,
+    data: item,
     msg: 'success'
   };
 

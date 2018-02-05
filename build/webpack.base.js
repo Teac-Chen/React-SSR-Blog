@@ -16,6 +16,7 @@ module.exports = {
       'components': path.join(__dirname, '../src/client/components'),
       'store': path.join(__dirname, '../src/client/store'),
       'actions': path.join(__dirname, '../src/client/actions'),
+      'utils': path.join(__dirname, '../src/client/utils'),
     }
   },
   module: {
