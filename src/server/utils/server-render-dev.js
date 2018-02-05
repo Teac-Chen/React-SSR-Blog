@@ -97,8 +97,6 @@ export default (app) => {
       const initialState = ctx.initialState || {};
       const helmet = Helmet.renderStatic();
 
-      console.log('helmet ==> ', helmet.title.toString());
-
       const html = ejs.render(template, {
         appString: content,
         initialState: JSON.stringify(initialState),

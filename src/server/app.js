@@ -2,8 +2,10 @@ import Koa from 'koa';
 import favicon from 'koa-favicon';
 import render from 'koa-ejs';
 import staticPath from 'koa-static';
+// import convert from 'koa-convert';
+import bodyParser from 'koa-bodyparser';
 import path from 'path';
-// import mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 import routers from './routers';
 import config from '../../config/config';
@@ -15,14 +17,14 @@ const host = process.env.HOST || config.host;
 const port = process.env.PORT || config.port;
 const isDev = process.env.NODE_ENV === 'development';
 
-// mongoose.Promise = global.Promise;
-// mongoose.connect('mongodb://localhost/blog', {useMongoClient: true}, (err) => {
-//   if(err) {
-//     console.log('connect mongodb failed! Error: ', err);
-//     return false
-//   };
-//   console.log('connect mongodb successful!!');
-// });
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/blog', (err) => {
+  if (err) {
+    console.log('connect mongodb failed! Error: ', err);
+    return false;
+  };
+  console.log('connect mongodb successful!!');
+});
 
 render(app, {
   root: path.join(__dirname, '../client/'),
@@ -32,7 +34,7 @@ render(app, {
   debug: false
 });
 
-app.use(staticPath(path.join(__dirname, '../client')));
+app.use(bodyParser()).use(staticPath(path.join(__dirname, '../client')));
 
 app.on('error', err => {
   console.log('server error', err);

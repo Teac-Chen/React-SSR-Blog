@@ -1,5 +1,7 @@
 import Router from 'koa-better-router';
 
+import * as Home from '../../controllers/frontstage/home';
+
 const router = Router().loadMethods();
 
 router.get('/home', (ctx, next) => {
@@ -7,22 +9,7 @@ router.get('/home', (ctx, next) => {
   return next();
 });
 
-router.get('/todo/list', (ctx, next) => {
-  ctx.initialState = {
-    todos: {
-      count: 2,
-      list: [{
-        index: 1,
-        completed: false,
-        text: 'check the detail'
-      }, {
-        index: 2,
-        completed: false,
-        text: 'make dinner'
-      }]
-    }
-  };
-  next();
-});
+router.get('/todo/list', Home.getInit);
+router.post('/todo/add', Home.addTodo);
 
 export default router;

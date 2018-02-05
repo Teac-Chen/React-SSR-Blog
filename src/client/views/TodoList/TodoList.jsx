@@ -14,7 +14,7 @@ const TodoList = ({ todos, todoClick }) => (
     <li>{todos.length}</li>
     {todos.map(item => (
       <li
-        key={item.index}
+        key={item._id}
         style={{
           cursor: 'pointer',
         }}
@@ -22,7 +22,13 @@ const TodoList = ({ todos, todoClick }) => (
         role="presentation"
         aria-hidden
       >
-        {item.index}-<span style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>{item.text}</span>
+        {item.index}-
+        <span
+          style={{ textDecoration: item.completed ? 'line-through' : 'none' }}
+        >
+          {item.text}
+        </span>
+        -{new Date(item.meta.updateAt).getTime()}
       </li>
     ))}
   </ul>
@@ -33,6 +39,8 @@ TodoList.propTypes = {
     index: PropTypes.number.isRequired,
     completed: PropTypes.bool.isRequired,
     text: PropTypes.string.isRequired,
+    meta: PropTypes.object.isRequired,
+    _id: PropTypes.any.isRequired,
   }).isRequired).isRequired,
   todoClick: PropTypes.func.isRequired,
 };
