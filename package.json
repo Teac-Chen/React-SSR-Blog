@@ -9,7 +9,8 @@
     "server": "cross-env NODE_ENV=production node bin/server/app.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.client.js",
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.js",
-    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.js"
+    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.js",
+    "build": "npm run build:client && npm run build:server && npm run server:pro"
   },
   "repository": {
     "type": "git",

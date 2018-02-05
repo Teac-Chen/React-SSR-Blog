@@ -17,7 +17,7 @@ const config = merge(baseConfig, {
   plugins: [
     new HTMLPlugin({
       template: path.join(__dirname, '../src/client/index.html'),
-      filename: 'index.html'
+      filename: 'template.html'
     }),
     new HTMLPlugin({
       template: '!!ejs-compiled-loader!' + path.join(__dirname, '../src/client/server.ejs'),
