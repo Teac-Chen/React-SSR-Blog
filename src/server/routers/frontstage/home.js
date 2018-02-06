@@ -11,5 +11,7 @@ router.get('/home', (ctx, next) => {
 
 router.get('/todo/list', Home.getInit);
 router.post('/todo/add', Home.addTodo);
+router.del('/todo/del', Home.delTodo);
+router.patch('/todo/patch', Home.patchTodo);
 
 export default router;

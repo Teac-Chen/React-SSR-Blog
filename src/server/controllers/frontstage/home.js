@@ -1,12 +1,6 @@
-import Todo from '../../models/todo';
+import qs from 'qs';
 
-export const getList = (ctx, next) => {
-  ctx.body = {
-    author: 'teac',
-    age: 25
-  };
-  return next();
-};
+import Todo from '../../models/todo';
 
 export const getInit = async (ctx, next) => {
   const list = await Todo.find({});
@@ -14,6 +8,7 @@ export const getInit = async (ctx, next) => {
   ctx.initialState = {
     todos: {
       count: list.length,
+      showType: 'all',
       list
     }
   };
@@ -24,7 +19,6 @@ export const addTodo = async (ctx, next) => {
   const { text } = ctx.request.body;
 
   const todo = new Todo({
-    index: 1,
     text
   });
 
@@ -33,6 +27,38 @@ export const addTodo = async (ctx, next) => {
   ctx.body = {
     code: 0,
     data: item,
+    msg: 'success'
+  };
+
+  next();
+};
+
+export const delTodo = async (ctx, next) => {
+  const { id } = ctx.request.body;
+
+  await Todo.deleteOne({ _id: id });
+
+  ctx.body = {
+    code: 0,
+    data: { id },
+    msg: 'success'
+  };
+
+  next();
+};
+
+export const patchTodo = async (ctx, next) => {
+  const { id } = qs.parse(ctx.request.body);
+
+  const todo = await Todo.findById(id);
+
+  todo.completed = !todo.completed;
+
+  await todo.save();
+
+  ctx.body = {
+    code: 0,
+    data: { id },
     msg: 'success'
   };
 
